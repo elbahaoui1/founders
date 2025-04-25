@@ -1,12 +1,12 @@
 @baseUrl = http://localhost:4000
-@access_token = eyJhbGciOiJIUzI1NiIsImtpZCI6ImV3NnMyN2VBRWl2cTN1alkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FqeW5vbmNtZnNsaWZtcXVpanpkLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ1NTkwODI1LCJpYXQiOjE3NDU1ODcyMjUsImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODcifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0NTU4NzIyNX1dLCJzZXNzaW9uX2lkIjoiOWJkZDZmMjEtMTMyOC00NWNhLTgzZmEtYWIzM2I4OGYzNmYxIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.hgjNM0gYvxT74-nJ5zc_SHLjNp6g3SGP8cCaKnAgRAU
+@access_token = eyJhbGciOiJIUzI1NiIsImtpZCI6ImV3NnMyN2VBRWl2cTN1alkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FqeW5vbmNtZnNsaWZtcXVpanpkLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ1NTkxNDc0LCJpYXQiOjE3NDU1ODc4NzQsImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODcifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0NTU4Nzg3NH1dLCJzZXNzaW9uX2lkIjoiN2RhMWY1NzAtM2M0ZC00OTRlLWFlZDMtMWUzNzZhNTQ0YzQ1IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.mXpBOG0um1UnoLF-Aam_hAJjSbWX54bqZEgVO-VaDOg
 
 ### 🔐 Register New User
 POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "aminelbahaoui@gmail.com",
+  "email": "awawawawawa@gmail.com",
   "password": "12345678"
 }
 
@@ -15,7 +15,7 @@ POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "aminelbahaoui@gmail.com",
+  "email": "awawawawawa@gmail.com",
   "password": "12345678"
 }
 
@@ -25,7 +25,7 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "name": "Work"
+  "name": "Test"
 }
 
 ### 📂 Get All Categories
@@ -33,20 +33,20 @@ GET {{baseUrl}}/api/categories
 Authorization: Bearer {{access_token}}
 
 ### 📂 Get Single Category
-GET {{baseUrl}}/api/categories/{{category_id}}
+GET {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
 Authorization: Bearer {{access_token}}
 
 ### 📂 Update Category
-PUT {{baseUrl}}/api/categories/{{category_id}}
+PUT {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "name": "Updated Work"
+  "name": "Updated Fun"
 }
 
 ### 📂 Delete Category
-DELETE {{baseUrl}}/api/categories/{{category_id}}
+DELETE {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
 Authorization: Bearer {{access_token}}
 
 ---
