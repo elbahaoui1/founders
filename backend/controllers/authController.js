@@ -16,10 +16,7 @@ exports.register = async (req, res) => {
 
     const { data, error } = await supabase.auth.signUp({ 
       email: email.trim().toLowerCase(), 
-      password,
-      options: {
-        emailRedirectTo: `${process.env.FRONTEND_URL}/verify-email`
-      }
+      password
     });
 
     if (error) {
@@ -44,11 +41,10 @@ exports.register = async (req, res) => {
     }
 
     res.status(201).json({ 
-      message: 'User registered successfully. Please check your email to verify your account.', 
+      message: 'User registered successfully', 
       user: {
         id: data.user.id,
-        email: data.user.email,
-        email_confirmed: data.user.email_confirmed_at !== null
+        email: data.user.email
       }
     });
   } catch (error) {
@@ -83,13 +79,6 @@ exports.login = async (req, res) => {
       if (error.message.includes('Invalid login credentials')) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
-      if (error.message.includes('Email not confirmed')) {
-        return res.status(401).json({ 
-          error: 'Email not verified',
-          message: 'Please verify your email before logging in. Check your inbox for the verification link.',
-          code: 'EMAIL_NOT_VERIFIED'
-        });
-      }
       
       return res.status(401).json({ error: 'Login failed' });
     }
@@ -107,8 +96,7 @@ exports.login = async (req, res) => {
       },
       user: {
         id: data.user.id,
-        email: data.user.email,
-        email_confirmed: data.user.email_confirmed_at !== null
+        email: data.user.email
       }
     });
   } catch (error) {
@@ -201,5 +189,63 @@ exports.verifyEmail = async (req, res) => {
   } catch (error) {
     console.error('Unexpected error in verifyEmail:', error);
     res.status(500).json({ error: 'Internal server error during email verification' });
+  }
+};
+
+exports.checkVerificationStatus = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid email is required' });
+    }
+
+    // First try to sign in to check if the user exists and is verified
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password: 'dummy-password' // We don't need the actual password for this check
+    });
+
+    if (signInError) {
+      if (signInError.message.includes('Email not confirmed')) {
+        // If email is not confirmed, resend verification
+        const { error: resendError } = await supabase.auth.resend({
+          type: 'signup',
+          email: email.trim().toLowerCase(),
+          options: {
+            emailRedirectTo: `${process.env.FRONTEND_URL}/verify-email`
+          }
+        });
+
+        if (resendError) {
+          console.error('Error resending verification:', resendError);
+          return res.status(400).json({ 
+            error: 'Failed to resend verification email',
+            isVerified: false
+          });
+        }
+
+        return res.json({ 
+          isVerified: false,
+          message: 'Verification email has been resent. Please check your inbox.'
+        });
+      }
+
+      if (signInError.message.includes('Invalid login credentials')) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      console.error('Error checking verification status:', signInError);
+      return res.status(400).json({ error: 'Failed to check verification status' });
+    }
+
+    // If we get here, the user exists and is verified
+    res.json({ 
+      isVerified: true,
+      message: 'Email is verified'
+    });
+  } catch (error) {
+    console.error('Unexpected error in checkVerificationStatus:', error);
+    res.status(500).json({ error: 'Internal server error while checking verification status' });
   }
 };

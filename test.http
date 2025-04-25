@@ -1,0 +1,15 @@
+### Check Email Verification Status
+GET http://localhost:3000/api/auth/check-verification?email=test@example.com
+Content-Type: application/json
+
+### Resend Verification Email
+POST http://localhost:3000/api/auth/resend-verification
+Content-Type: application/json
+
+{
+    "email": "test@example.com"
+}
+
+### Verify Email with Token
+GET http://localhost:3000/api/auth/verify-email?token_hash=your_token_hash&type=signup
+Content-Type: application/json 

@@ -1,87 +1,81 @@
 @baseUrl = http://localhost:4000
-@access_token = eyJhbGciOiJIUzI1NiIsImtpZCI6ImV3NnMyN2VBRWl2cTN1alkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FqeW5vbmNtZnNsaWZtcXVpanpkLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ1NTkxNDc0LCJpYXQiOjE3NDU1ODc4NzQsImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiYW1pbmVsYmFoYW91aUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJzdWIiOiI1OGI0NzkzNy01MWQ5LTQyNjYtYjNiMC1mZWE0NjIxNDVkODcifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJwYXNzd29yZCIsInRpbWVzdGFtcCI6MTc0NTU4Nzg3NH1dLCJzZXNzaW9uX2lkIjoiN2RhMWY1NzAtM2M0ZC00OTRlLWFlZDMtMWUzNzZhNTQ0YzQ1IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.mXpBOG0um1UnoLF-Aam_hAJjSbWX54bqZEgVO-VaDOg
+@access_token = eyJhbGciOiJIUzI1NiIsImtpZCI6ImV3NnMyN2VBRWl2cTN1alkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FqeW5vbmNtZnNsaWZtcXVpanpkLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1MGIyNTU3ZC1hYThkLTQ5ODctOGM2ZC00OTczYmUxYmRhNzEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ1NjA0MzU2LCJpYXQiOjE3NDU2MDA3NTYsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiNTBiMjU1N2QtYWE4ZC00OTg3LThjNmQtNDk3M2JlMWJkYTcxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NDU2MDA3NTZ9XSwic2Vzc2lvbl9pZCI6IjQ5NWZlMmNjLTZlMzctNGRkYi04ODNjLTYxMjg4OGE5N2VlOCIsImlzX2Fub255bW91cyI6ZmFsc2V9.K0EvwF8v4ctDVc-yZ42e62zmtaZOTLKwugzM5st971s
 
-### 🔐 Register New User
+### Register a new user
 POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "awawawawawa@gmail.com",
-  "password": "12345678"
+  "email": "test@example.com",
+  "password": "password123"
 }
 
-### 🔐 Login User
+### Login
 POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "awawawawawa@gmail.com",
-  "password": "12345678"
+  "email": "test@example.com",
+  "password": "password123"
 }
 
-### 📂 Create Category
+### Get all categories
+GET {{baseUrl}}/api/categories
+Authorization: Bearer {{access_token}}
+
+### Create a new category
 POST {{baseUrl}}/api/categories
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "name": "Test"
+  "name": "Work",
+  "color": "#FF0000"
 }
 
-### 📂 Get All Categories
-GET {{baseUrl}}/api/categories
-Authorization: Bearer {{access_token}}
-
-### 📂 Get Single Category
-GET {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
-Authorization: Bearer {{access_token}}
-
-### 📂 Update Category
-PUT {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
+### Update a category
+PUT {{baseUrl}}/api/categories/{{category_id}}
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "name": "Updated Fun"
+  "name": "Personal",
+  "color": "#00FF00"
 }
 
-### 📂 Delete Category
-DELETE {{baseUrl}}/api/categories/1ae1d917-f7db-4ff7-8482-98623fcc1074
+### Delete a category
+DELETE {{baseUrl}}/api/categories/{{category_id}}
 Authorization: Bearer {{access_token}}
 
----
+### Get all tasks
+GET {{baseUrl}}/api/tasks
+Authorization: Bearer {{access_token}}
 
-### ✅ Create Task
+### Create a new task
 POST {{baseUrl}}/api/tasks
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "title": "Finish API docs",
-  "category_id": "{{category_id}}",
-  "priority": 1,
-  "status": "in-progress"
+  "title": "Complete project",
+  "description": "Finish the project by Friday",
+  "dueDate": "2024-03-15",
+  "categoryId": "{{category_id}}"
 }
 
-### ✅ Get All Tasks
-GET {{baseUrl}}/api/tasks
-Authorization: Bearer {{access_token}}
-
-### ✅ Get Single Task
-GET {{baseUrl}}/api/tasks/{{task_id}}
-Authorization: Bearer {{access_token}}
-
-### ✅ Update Task
+### Update a task
 PUT {{baseUrl}}/api/tasks/{{task_id}}
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
 {
-  "title": "Updated Task Title",
-  "priority": 2,
-  "status": "done"
+  "title": "Updated task",
+  "description": "Updated description",
+  "dueDate": "2024-03-20",
+  "categoryId": "{{category_id}}"
 }
 
-### ✅ Delete Task
+### Delete a task
 DELETE {{baseUrl}}/api/tasks/{{task_id}}
 Authorization: Bearer {{access_token}}
+
