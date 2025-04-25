@@ -1,6 +1,11 @@
+'use client';
+
 import { useState } from 'react';
 import { Category } from '@/app/types/task';
 import CategoryForm from './CategoryForm';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 
@@ -62,9 +67,8 @@ export default function CategoryManager({ categories, setCategories }: CategoryM
           'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({
-        name: categoryData.name
-
-        }),
+          name: categoryData.name
+        })
       });
       const updatedCategory = await response.json();
       setCategories(categories.map((category) =>
@@ -94,62 +98,60 @@ export default function CategoryManager({ categories, setCategories }: CategoryM
     }
   };
 
-  const handleEditCategory = (category: Category) => {
-    setEditingCategory(category);
-    setShowCategoryForm(true);
-  };
-
   return (
-    <div className="mb-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Categories</h2>
-        <button
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-gray-900">Categories</h2>
+        <Button
           onClick={() => {
             setEditingCategory(null);
             setShowCategoryForm(true);
           }}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="flex items-center gap-2"
         >
+          <Plus className="h-4 w-4" />
           Add Category
-        </button>
+        </Button>
       </div>
 
-      {showCategoryForm && (
-        <div className="mb-4">
-          <CategoryForm
-            category={editingCategory || undefined}
-            onSubmit={editingCategory ? handleUpdateCategory : handleCreateCategory}
-            onCancel={() => {
-              setShowCategoryForm(false);
-              setEditingCategory(null);
-            }}
-          />
-        </div>
-      )}
+      <CategoryForm
+        open={showCategoryForm}
+        onOpenChange={setShowCategoryForm}
+        category={editingCategory || undefined}
+        onSubmit={editingCategory ? handleUpdateCategory : handleCreateCategory}
+        onCancel={() => {
+          setShowCategoryForm(false);
+          setEditingCategory(null);
+        }}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="space-y-2">
         {categories.map((category) => (
-          <div key={category.id} className="p-4 border rounded-lg">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-medium">{category.name}</h3>
-              </div>
+          <Card key={category.id} className="hover:shadow-lg transition-shadow py-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 py-2 px-4">
+              <CardTitle className="text-lg font-medium">{category.name}</CardTitle>
               <div className="flex space-x-2">
-                <button
-                  onClick={() => handleEditCategory(category)}
-                  className="text-blue-500 hover:text-blue-600"
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setEditingCategory(category);
+                    setShowCategoryForm(true);
+                  }}
                 >
-                  Edit
-                </button>
-                <button
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => handleDeleteCategory(category.id)}
                   className="text-red-500 hover:text-red-600"
                 >
-                  Delete
-                </button>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
-            </div>
-          </div>
+            </CardHeader>
+          </Card>
         ))}
       </div>
     </div>

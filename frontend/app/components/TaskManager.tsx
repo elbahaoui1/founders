@@ -7,6 +7,9 @@ import TaskForm from './TaskForm';
 import CategoryForm from './CategoryForm';
 import TaskList from './TaskList';
 import { toast } from 'sonner';
+import TaskFormDialog from './TaskForm';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 interface TaskManagerProps {
   tasks: Task[];
@@ -171,35 +174,33 @@ export default function TaskManager({ tasks, setTasks, categories }: TaskManager
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Tasks</h2>
-        <div className="space-x-4">
-          <button
-            onClick={() => setShowTaskForm(true)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Add Task
-          </button>
-          
-        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Tasks</h2>
+        <Button
+          onClick={() => setShowTaskForm(true)}
+          className="flex items-center gap-2"
+        >
+          <Plus className="h-4 w-4" />
+          Add Task
+        </Button>
       </div>
 
-      {showTaskForm && (
-        <TaskForm
-          task={editingTask}
-          categories={categories}
-          onSubmit={(taskData) => {
-            if (editingTask) {
-              handleUpdateTask(editingTask.id, taskData);
-            } else {
-              handleCreateTask(taskData);
-            }
-          }}
-          onCancel={() => {
-            setShowTaskForm(false);
-            setEditingTask(undefined);
-          }}
-        />
-      )}
+      <TaskFormDialog
+        open={showTaskForm}
+        onOpenChange={setShowTaskForm}
+        task={editingTask}
+        categories={categories}
+        onSubmit={(taskData) => {
+          if (editingTask) {
+            handleUpdateTask(editingTask.id, taskData);
+          } else {
+            handleCreateTask(taskData);
+          }
+        }}
+        onCancel={() => {
+          setShowTaskForm(false);
+          setEditingTask(undefined);
+        }}
+      />
 
       {showCategoryForm && (
         <CategoryForm
