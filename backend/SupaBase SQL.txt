@@ -1,0 +1,22 @@
+-- 🧑‍💼 Categories table
+create table if not exists categories (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  user_id uuid references auth.users on delete cascade,
+  created_at timestamptz default now()
+);
+
+-- ✅ Tasks table
+create table if not exists tasks (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  status text default 'pending', -- or enum if you prefer
+  priority integer default 0,
+  category_id uuid references categories(id) on delete set null,
+  user_id uuid references auth.users on delete cascade,
+  created_at timestamptz default now()
+);
+
+-- Indexing for performance (optional but recommended)
+create index if not exists idx_tasks_user_id on tasks(user_id);
+create index if not exists idx_categories_user_id on categories(user_id);
