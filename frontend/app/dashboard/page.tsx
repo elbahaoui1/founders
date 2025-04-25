@@ -20,16 +20,23 @@ export default function DashboardPage() {
   const fetchTasks = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('No active session');
+      if (!session) {
+        console.error('No active session');
+        setTasks([]);
+        return;
+      }
 
       const response = await fetch('http://localhost:4000/api/tasks', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
         },
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
@@ -66,24 +73,26 @@ export default function DashboardPage() {
   const fetchCategories = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) throw new Error('No active session');
+      if (!session) {
+        console.error('No active session');
+        setCategories([]);
+        return;
+      }
 
       const response = await fetch('http://localhost:4000/api/categories', {
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
         },
       });
-
-      
-      
+  console.log("session", session.access_token);      
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error response:', errorData);
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log("response", data);
       
       if (!Array.isArray(data)) {
         console.error('Expected an array of categories, but received:', data);

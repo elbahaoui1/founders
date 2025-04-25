@@ -6,7 +6,7 @@ import { Task, Category } from '@/app/types/task';
 interface TaskFormProps {
   task?: Task;
   categories: Category[];
-  onSubmit: (taskData: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'user_id' | 'status'>) => void;
+  onSubmit: (taskData: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'user_id'>) => void;
   onCancel: () => void;
 }
 
@@ -15,6 +15,7 @@ export default function TaskForm({ task, categories = [], onSubmit, onCancel }: 
   const [description, setDescription] = useState(task?.description || '');
   const [categoryId, setCategoryId] = useState(task?.category_id || '');
   const [priority, setPriority] = useState(task?.priority || 1);
+  const [status, setStatus] = useState<Task['status']>(task?.status || 'pending');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +23,8 @@ export default function TaskForm({ task, categories = [], onSubmit, onCancel }: 
       title,
       description,
       category_id: categoryId,
-      priority
+      priority,
+      status
     });
   };
 
@@ -89,6 +91,23 @@ export default function TaskForm({ task, categories = [], onSubmit, onCancel }: 
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           required
         />
+      </div>
+
+      <div>
+        <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+          Status
+        </label>
+        <select
+          id="status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value as Task['status'])}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          required
+        >
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
       </div>
 
       <div className="flex justify-end space-x-3">

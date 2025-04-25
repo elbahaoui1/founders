@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Category } from '@/app/types/task';
 import CategoryForm from './CategoryForm';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 interface CategoryManagerProps {
   categories: Category[];
@@ -24,15 +25,27 @@ export default function CategoryManager({ categories, setCategories }: CategoryM
           'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({
-          ...categoryData,
-          user_id: session.user.id
-        }),
+          name: categoryData.name
+        })
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create category');
+      }
+
       const newCategory = await response.json();
+      
+      if (!newCategory || !newCategory.id) {
+        throw new Error('Invalid response from server');
+      }
+
       setCategories([...categories, newCategory]);
       setShowCategoryForm(false);
+      toast.success('Category created successfully');
     } catch (error) {
       console.error('Error creating category:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to create category');
     }
   };
 
@@ -49,8 +62,8 @@ export default function CategoryManager({ categories, setCategories }: CategoryM
           'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({
-          ...categoryData,
-          user_id: session.user.id
+        name: categoryData.name
+
         }),
       });
       const updatedCategory = await response.json();

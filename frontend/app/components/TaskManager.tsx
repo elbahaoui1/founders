@@ -6,6 +6,7 @@ import { Task, Category } from '@/app/types/task';
 import TaskForm from './TaskForm';
 import CategoryForm from './CategoryForm';
 import TaskList from './TaskList';
+import { toast } from 'sonner';
 
 interface TaskManagerProps {
   tasks: Task[];
@@ -145,6 +146,28 @@ export default function TaskManager({ tasks, setTasks, categories }: TaskManager
     setShowCategoryForm(false);
   };
 
+  const handlePriorityChange = async (taskId: string, newPriority: number) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+
+    const { data, error } = await supabase
+      .from('tasks')
+      .update({ priority: newPriority })
+      .eq('id', taskId)
+      .eq('user_id', session.user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error updating task priority:', error);
+      toast.error('Failed to update task priority');
+      return;
+    }
+
+    setTasks(tasks.map(task => task.id === taskId ? data : task));
+    toast.success('Task priority updated successfully');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -156,12 +179,7 @@ export default function TaskManager({ tasks, setTasks, categories }: TaskManager
           >
             Add Task
           </button>
-          <button
-            onClick={() => setShowCategoryForm(true)}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Add Category
-          </button>
+          
         </div>
       </div>
 
@@ -198,6 +216,7 @@ export default function TaskManager({ tasks, setTasks, categories }: TaskManager
           setShowTaskForm(true);
         }}
         onDelete={handleDeleteTask}
+        onPriorityChange={handlePriorityChange}
       />
     </div>
   );
