@@ -25,7 +25,7 @@ A modern task management application built with Next.js, Supabase, and shadcn/ui
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd task-management-app
+cd FOUNDERS
 ```
 
 2. Install dependencies for both frontend and backend:
@@ -143,6 +143,24 @@ The application will be available at:
 1. Open http://localhost:3000 in your browser
 2. Sign up for a new account or log in with existing credentials
 3. Start managing your tasks and categories
+
+## Screenshots
+
+### Authentication
+![Authentication Screenshot](screenshots/auth.png)
+*Sign up and login interface*
+
+### Dashboard
+![Dashboard Screenshot](screenshots/dashboard.png)
+*Main dashboard with task list and categories*
+
+### Task Management
+![Task Management Screenshot](screenshots/tasks.png)
+*Create and manage tasks with drag-and-drop functionality*
+
+### Category Management
+![Category Management Screenshot](screenshots/categories.png)
+*Organize tasks with custom categories*
 
 ## Tech Stack
 
