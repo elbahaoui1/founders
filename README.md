@@ -156,7 +156,7 @@ The application will be available at:
 
 ### Task Management
 ![Task Management Screenshot](screenshots/tasks.png)
-*Create and manage tasks with drag-and-drop functionality*
+*Create and manage tasks*
 
 ### Category Management
 ![Category Management Screenshot](screenshots/categories.png)
